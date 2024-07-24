@@ -1,5 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using WebApiProject.Context;
+using WebApiProject.Middleware;
+using AutoMapper;
+using System.Reflection;
+using WebApiProject.Interface;
+using WebApiProject.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +27,10 @@ builder.Services.AddDbContext<WebContext>(options =>
             );
     });
 });
+builder.Services.AddScoped<IUserServices, UserServices>();
+builder.Services.AddScoped<IProductServices, ProductService>();
+// Add  This to in the Program.cs file
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());  // Add this line
 
 var app = builder.Build();
 
@@ -31,6 +40,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
