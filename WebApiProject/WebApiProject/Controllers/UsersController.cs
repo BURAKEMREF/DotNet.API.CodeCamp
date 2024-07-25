@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebApiProject.Contracts;
 using WebApiProject.Interface;
 
@@ -15,7 +16,8 @@ namespace WebApiProject.Controllers
             _Userservices = UserServices;
         }
 
-        [HttpPost]
+        [HttpPost("CreateTodoAsync")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> CreateTodoAsync(CreateUserRequest request)
         {
             if (!ModelState.IsValid)
@@ -47,6 +49,7 @@ namespace WebApiProject.Controllers
         }
 
         [HttpGet]
+        
         public async Task<IActionResult> UserGetAllAsync()
         {
             try
@@ -73,6 +76,7 @@ namespace WebApiProject.Controllers
         }
 
         [HttpGet("{id:guid}")]
+      
         public async Task<IActionResult> UserGetByIdAsync(Guid id)
         {
             try
@@ -90,6 +94,7 @@ namespace WebApiProject.Controllers
             }
         }
         [HttpPut("{id:guid}")]
+        
 
         public async Task<IActionResult> UserUpdateTodoAsync(Guid id, UpdateUserRequest request)
         {
@@ -123,6 +128,7 @@ namespace WebApiProject.Controllers
         }
 
         [HttpDelete("{id:guid}")]
+       
         public async Task<IActionResult> UserDeleteTodoAsync(Guid id)
         {
             try

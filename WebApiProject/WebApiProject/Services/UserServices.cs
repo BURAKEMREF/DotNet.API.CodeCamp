@@ -65,7 +65,7 @@ Veritabanına Ekleme : Varlığı bağlamımızdaki DbSet'e ekleriz ve değişik
 Hata Yönetimi : İşlem sırasında oluşabilecek herhangi bir istisnayı yakalıyoruz, hatayı kaydediyoruz ve açıklayıcı bir hata mesajıyla yeni bir istisna atıyoruz.
          */
         //kaldırma işlemi burda döner.
-        public Task UserDeleteTodoAsync(Guid id)
+        public async Task UserDeleteTodoAsync(Guid id)
         {
             var User = await _context.Users.FindAsync(id);
             if (User != null)
