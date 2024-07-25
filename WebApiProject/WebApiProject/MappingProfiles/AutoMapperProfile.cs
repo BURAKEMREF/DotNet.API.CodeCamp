@@ -31,6 +31,9 @@ namespace WebApiProject.MappingProfiles
                 //.ForMember(dest => dest.Id, opt => opt.Ignore())
                 //.ForMember(dest => dest.Name, opt => opt.Ignore())
 
+            CreateMap<UpdateProductRequest, Product>();
+            CreateMap<CreateAdressRequest, Adress>();
+            CreateMap<UpdateAdressRequest, Adress>();
         }
     }
 }

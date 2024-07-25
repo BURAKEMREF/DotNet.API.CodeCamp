@@ -64,10 +64,21 @@ CreatedAtCreatedAt : Varlığın özelliğini Todogeçerli UTC tarih ve saatine 
 Veritabanına Ekleme : Varlığı bağlamımızdaki DbSet'e ekleriz ve değişiklikleri asenkron olarak kaydederiz .
 Hata Yönetimi : İşlem sırasında oluşabilecek herhangi bir istisnayı yakalıyoruz, hatayı kaydediyoruz ve açıklayıcı bir hata mesajıyla yeni bir istisna atıyoruz.
          */
-
+        //kaldırma işlemi burda döner.
         public Task UserDeleteTodoAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var User = await _context.Users.FindAsync(id);
+            if (User != null)
+            {
+                _context.Users.Remove(User);
+                await _context.SaveChangesAsync();
+
+            }
+            else
+            {
+                throw new Exception($"No  item found with the id {id}");
+            }
+
         }
 
         public async Task<User> UserGetByIdAsync(Guid id)

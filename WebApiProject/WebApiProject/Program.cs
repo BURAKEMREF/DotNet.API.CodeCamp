@@ -29,6 +29,7 @@ builder.Services.AddDbContext<WebContext>(options =>
 });
 builder.Services.AddScoped<IUserServices, UserServices>();
 builder.Services.AddScoped<IProductServices, ProductService>();
+builder.Services.AddScoped<IAdressServices,AdressService>();
 // Add  This to in the Program.cs file
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());  // Add this line
 

@@ -107,5 +107,22 @@ namespace WebApiProject.Controllers
                 return StatusCode(500, new { message = $"An error occurred while updating blog post with id {id}", error = ex.Message });
             }
         }
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> ProductDeleteTodoAsync(Guid id)
+        {
+            try
+            {
+                await _Productservices.ProductDeleteTodoAsync(id);
+                return Ok(new { message = $"Product  with id {id} successfully deleted" });
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred while deleting Prodcut Item  with id {id}", error = ex.Message });
+
+            }
+        }
+
+
     }
 }

@@ -126,9 +126,19 @@ Hata İşleme : Belirtilen Todo öğesi bulunamazsa Id, açıklayıcı bir hata 
 
         }
 
-        Task IProductServices.ProductDeleteTodoAsync(Guid id)
+        public async Task ProductDeleteTodoAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var product = await _context.Products.FindAsync(id);
+            if (product != null)
+            {
+                _context.Products.Remove(product);
+                await _context.SaveChangesAsync();
+
+            }
+            else
+            {
+                throw new Exception($"No  item found with the id {id}");
+            }
         }
    
     
