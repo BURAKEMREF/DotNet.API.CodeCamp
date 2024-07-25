@@ -38,7 +38,18 @@ namespace WebApiProject.Services
 
         public async Task AdressDeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var adress = await _context.Adresses.FindAsync(id);
+            if (adress != null)
+            {
+                _context.Adresses.Remove(adress);
+                await _context.SaveChangesAsync();
+
+            }
+            else
+            {
+                throw new Exception($"No  item found with the id {id}");
+            }
+
         }
 
         public async Task<IEnumerable<Adress>> AdressGetAllAsync()
@@ -91,14 +102,6 @@ namespace WebApiProject.Services
                     {
                     adress.UserID = request.UserID;
                     }
-
-                    if (request.Priority != null)
-                    {
-                    adress.Priority = request.Priority;
-                    }
-
-                
-
                     await _context.SaveChangesAsync();
                 }
                 catch (Exception ex)

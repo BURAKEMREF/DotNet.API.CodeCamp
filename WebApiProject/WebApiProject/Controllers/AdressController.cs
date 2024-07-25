@@ -102,5 +102,20 @@ namespace WebApiProject.Controllers
 
 
         }
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> AdressDeleteAsync(Guid id)
+        {
+            try
+            {
+                await _adressServices.AdressDeleteAsync(id);
+                return Ok(new { message = $"Adress  with id {id} successfully deleted" });
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred while deleting Adress Item  with id {id}", error = ex.Message });
+
+            }
+        }
     }
 }
