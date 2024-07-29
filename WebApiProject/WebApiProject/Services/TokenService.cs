@@ -7,7 +7,7 @@ using WebApiProject.Interface;
 
 namespace WebApiProject.Services
 {
-    public class TokenService:ITokenService
+    public class TokenService : ITokenService
     {
         readonly IConfiguration configuration;
 
@@ -39,5 +39,7 @@ namespace WebApiProject.Services
                 TokenExpireDate = dateTimeNow.Add(TimeSpan.FromMinutes(500))
             });
         }
+
+
     }
 }
