@@ -36,23 +36,17 @@ namespace WebApiProject.Services
         public async Task<UserRegisterResponse> RegisterUserAsync(UserRegisterRequest request)
         {
             UserRegisterResponse response = new();
-            var User =  _context.Users.Where( x => x.UserName == request.Username).FirstOrDefault();
-
-            if (User != null)
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == request.Username);
+            if (user != null)
             {
                 response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 response.Message = "Kullanıcı zaten kayıtlı!";
+
                 return response;
             }
 
-            GenerateTokenRequest generateTokenRequest = new GenerateTokenRequest();
-            generateTokenRequest.Username = request.Username;
-
-            var token = _tokenService.GenerateToken(generateTokenRequest);
-
-            var passwordHash = ComputeSha256Hash(token.Result.Token);
-
-            var user = new User
+            var passwordHash = ComputeSha256Hash(request.Password);
+            var newUser = new User
             {
                 UserName = request.Username,
                 Password = passwordHash,
@@ -60,76 +54,56 @@ namespace WebApiProject.Services
                 CreatedAt = DateTime.UtcNow,
             };
 
-            _context.Users.Add(user);
+            await _context.Users.AddAsync(newUser);
             await _context.SaveChangesAsync();
 
             response.StatusCode =(int) HttpStatusCode.OK;
             response.Message = "Kayıt başarlı";
+
             return response;
-
         }
-
 
         public async Task<UserLoginResponse> LoginUserAsync(UserLoginRequest request)
         {
-            
-            GenerateTokenRequest generateTokenRequest = new GenerateTokenRequest();
             UserLoginResponse response = new();
-            var User = await _context.Users.Where(u => u.UserName == request.Username).ToArrayAsync();
 
-            if (User == null)
+            if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
+            {
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                response.Message = "User is not found!";
+
+                return response;
+            }
+
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.UserName == request.Username);
+            if (user == null)
             {
                 response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                response.Message = "User not found!";
-                return response;
-                
-            }
-            var user = new User
-            {
-                UserName = request.Username,
-                Password = request.Password,
-                Email = request.Email,
-                CreatedAt = DateTime.UtcNow,
-            };
-            generateTokenRequest.Username = request.Username;
+                response.Message = "User is not found!";
 
+                return response;
+            }
+
+            string sha256Password = ComputeSha256Hash(request.Password);
+            if (!sha256Password.Equals(user.Password, StringComparison.InvariantCultureIgnoreCase))
+            {
+                response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                response.Message = "Password is invalid";
+
+                return response;
+            }
+
+            GenerateTokenRequest generateTokenRequest = new GenerateTokenRequest()
+            {
+                Username = request.Username
+            };
             var token = _tokenService.GenerateToken(generateTokenRequest);
 
-            var passwordHash = ComputeSha256Hash(token.Result.Token);
-
-            if (user.Password == request.Password)
-            {
-                response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                response.Message =" Login to the system successful";
-                return response;
-                
-            }
             response.StatusCode = (int)HttpStatusCode.OK;
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            response.Message = "Login is successfull!";
+            response.AuthToken = token.Result.Token;
 
             return response;
-
-
-
-
-            /*  if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
-              {
-                  throw new ArgumentNullException(nameof(request));
-              }
-
-              if (request.Username == "emre" && request.Password == "1")
-              {
-                  var generatedTokenInformation = await tokenService.GenerateToken(new GenerateTokenRequest { Username = request.Username });
-                  response.Username = request.Username;
-                  response.AuthenticateResult = true;
-                  response.AuthToken = generatedTokenInformation.Token;
-                  response.AccessTokenExpireDate = generatedTokenInformation.TokenExpireDate;
-              }
-
-              return response;
-            */
-
         }
        public string ComputeSha256Hash(string rawData)
         {
