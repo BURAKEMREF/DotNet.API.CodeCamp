@@ -36,6 +36,7 @@ _mapperIMapper: AutoMapper kullanarak nesneden nesneye eşleme yapmamızı sağl
             
             try
             {
+                
                 var User = _mapper.Map<User>(request);
                 User.CreatedAt = DateTime.UtcNow;
                 _context.Add(User);
@@ -83,9 +84,9 @@ Hata Yönetimi : İşlem sırasında oluşabilecek herhangi bir istisnayı yakal
 
         }
 
-        public async Task<User> UserGetByIdAsync(Guid id)
+        public async Task<User> UserGetByIdAsync(long id)
         {
-            var User = await _context.Users.FindAsync(id);
+            var User = await _context.Users.SingleOrDefaultAsync(user => user.Id == id);
             if (User == null)
             {
                 throw new KeyNotFoundException($"No Todo item with Id {id} found.");
@@ -93,7 +94,7 @@ Hata Yönetimi : İşlem sırasında oluşabilecek herhangi bir istisnayı yakal
             return User;
         }
 
-        public async Task UserUpdateTodoAsync(Guid id, UpdateUserRequest request)
+        public async Task UserUpdateTodoAsync(long id, UpdateUserRequest request)
         {
             
             

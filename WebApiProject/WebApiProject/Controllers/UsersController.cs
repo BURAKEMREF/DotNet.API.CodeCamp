@@ -17,7 +17,7 @@ namespace WebApiProject.Controllers
         }
 
         [HttpPost("CreateTodoAsync")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+      //  [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> CreateTodoAsync(CreateUserRequest request)
         {
             if (!ModelState.IsValid)
@@ -36,7 +36,9 @@ namespace WebApiProject.Controllers
             {
 
                 await _Userservices.UserCreateTodoAsync(request);
+                
                 return Ok(new { message = "Blog post successfully created" });
+
 
             }
             catch (Exception ex)
@@ -75,9 +77,8 @@ namespace WebApiProject.Controllers
             }
         }
 
-        [HttpGet("{id:guid}")]
-      
-        public async Task<IActionResult> UserGetByIdAsync(Guid id)
+        [HttpGet("{id}")]   
+        public async Task<IActionResult> UserGetByIdAsync(long id)
         {
             try
             {
@@ -96,7 +97,7 @@ namespace WebApiProject.Controllers
         [HttpPut("{id:guid}")]
         
 
-        public async Task<IActionResult> UserUpdateTodoAsync(Guid id, UpdateUserRequest request)
+        public async Task<IActionResult> UserUpdateTodoAsync(long id, UpdateUserRequest request)
         {
 
             if (!ModelState.IsValid)
