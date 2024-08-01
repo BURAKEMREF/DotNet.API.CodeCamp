@@ -14,14 +14,15 @@ namespace WebApiProject.MappingProfiles
         public AutoMapperProfile()
         {
             CreateMap<CreateUserRequest, User>()
+                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
+                .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.Adresses, opt => opt.MapFrom(src => src.Adresses))
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
-                .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
-                .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
-                .ForMember(dest => dest.Name, opt => opt.Ignore())
-                .ForMember(dest => dest.Email, opt => opt.Ignore())
-                .ForMember(dest => dest.Adresses, opt => opt.Ignore())
-                .ForMember(dest => dest.Password, opt => opt.Ignore())
-                .ForMember(dest => dest.UserName, opt => opt.Ignore());
+                .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName));
+
             CreateMap<UpdateUserRequest, User>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
