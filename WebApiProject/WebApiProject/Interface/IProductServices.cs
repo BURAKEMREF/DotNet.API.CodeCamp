@@ -8,10 +8,10 @@ namespace WebApiProject.Interface
         
         
             Task<IEnumerable<Product>> ProductGetAllAsync();
-            Task<Product> ProductGetByIdAsync(Guid id);
+            Task<Product> ProductGetByIdAsync(long id);
             Task ProductCreateTodoAsync(CreateProductRequest request);
-            Task ProductUpdateTodoAsync(Guid id, UpdateProductRequest request);
-            Task ProductDeleteTodoAsync(Guid id);
+            Task ProductUpdateTodoAsync(long id, UpdateProductRequest request);
+            Task ProductDeleteTodoAsync(long id);
         
     }
 }

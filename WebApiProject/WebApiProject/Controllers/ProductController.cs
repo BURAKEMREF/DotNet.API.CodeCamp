@@ -17,6 +17,8 @@ namespace WebApiProject.Controllers
             _Productservices = ProductServices;
         }
         [HttpPost]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+
         public async Task<IActionResult> CreateTodoAsync(CreateProductRequest request)
         {
             if (!ModelState.IsValid)
@@ -38,6 +40,7 @@ namespace WebApiProject.Controllers
             }
         }
         [HttpGet]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> ProductGetAllAsync()
         {
             try
@@ -62,8 +65,9 @@ namespace WebApiProject.Controllers
         /*Bu yöntem, GetByIdAsyncarayüzden ITodoServicesbir Todo öğesini kendi yoluyla almak için yöntemi çağırır Id.
          * Bir Todo öğesi başarıyla alınırsa, bir başarı mesajı ve Todo öğesiyle bir yanıt döndürür .
          * Alma işlemi sırasında bir hata oluşursa, bir hata mesajıyla Okbir yanıt döndürür .500 Internal Server Error*/
-        [HttpGet("{id:guid}")]
-        public async Task<IActionResult> ProductGetByIdAsync(Guid id)
+        [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> ProductGetByIdAsync(long id)
         {
             try
             {
@@ -86,7 +90,8 @@ namespace WebApiProject.Controllers
     Başarılı Yanıt : Yapılacaklar öğesi başarıyla güncellenirse, Okbaşarı mesajını içeren bir yanıt döndürürüz.
     Hata İşleme500 Internal Server Error : Güncelleme işlemi sırasında bir hata oluşursa, hata mesajı içeren bir yanıt döndürüyoruz*/
         [HttpPut("{id:guid}")]
-        public async Task<IActionResult> UpdateTodoAsync(Guid id, UpdateProductRequest request)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> UpdateTodoAsync(long id, UpdateProductRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -109,7 +114,8 @@ namespace WebApiProject.Controllers
             }
         }
         [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> ProductDeleteTodoAsync(Guid id)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> ProductDeleteTodoAsync(long id)
         {
             try
             {

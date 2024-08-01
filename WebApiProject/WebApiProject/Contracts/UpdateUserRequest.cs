@@ -14,7 +14,7 @@ namespace WebApiProject.Contracts
 
         [Required]
         public DateTime CreatedAt { get; set; }
-        public DateTime UptadedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         public string Password { get; set; }
 

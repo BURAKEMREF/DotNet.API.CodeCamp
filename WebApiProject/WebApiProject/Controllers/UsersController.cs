@@ -17,12 +17,12 @@ namespace WebApiProject.Controllers
         }
 
         [HttpPost("CreateTodoAsync")]
-      //  [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> CreateTodoAsync(CreateUserRequest request)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState); 
+                return BadRequest(ModelState);
             }
             /*Model Doğrulaması : İstek modelinin geçerli olup olmadığını kullanarak kontrol ederiz ModelState.IsValid. Model geçerli değilse, BadRequestmodel durum hatalarıyla bir yanıt döndürürüz.
 
@@ -36,7 +36,7 @@ namespace WebApiProject.Controllers
             {
 
                 await _Userservices.UserCreateTodoAsync(request);
-                
+
                 return Ok(new { message = "Blog post successfully created" });
 
 
@@ -51,7 +51,7 @@ namespace WebApiProject.Controllers
         }
 
         [HttpGet]
-        
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UserGetAllAsync()
         {
             try
@@ -77,7 +77,8 @@ namespace WebApiProject.Controllers
             }
         }
 
-        [HttpGet("{id}")]   
+        [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UserGetByIdAsync(long id)
         {
             try
@@ -95,8 +96,7 @@ namespace WebApiProject.Controllers
             }
         }
         [HttpPut("{id:guid}")]
-        
-
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UserUpdateTodoAsync(long id, UpdateUserRequest request)
         {
 
@@ -109,7 +109,7 @@ namespace WebApiProject.Controllers
             {
 
                 var user = await _Userservices.UserGetByIdAsync(id);
-                if ( user == null)
+                if (user == null)
                 {
                     return NotFound(new { message = $"Todo Item  with id {id} not found" });
                 }
@@ -121,16 +121,11 @@ namespace WebApiProject.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = $"An error occurred while updating blog post with id {id}", error = ex.Message });
-
-
             }
-
-
         }
-
-        [HttpDelete("{id:guid}")]
-       
-        public async Task<IActionResult> UserDeleteTodoAsync(Guid id)
+        [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> UserDeleteTodoAsync(long id)
         {
             try
             {

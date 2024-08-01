@@ -4,19 +4,12 @@ using WebApiProject.Context;
 using WebApiProject.Contracts;
 using WebApiProject.Entities;
 using WebApiProject.Interface;
-
-
 namespace WebApiProject.Services
-{
-
-
-    public class UserServices : IUserServices
+{    public class UserServices : IUserServices
     {
         private readonly WebContext _context;
         private readonly ILogger<UserServices> _logger;
         private readonly IMapper _mapper;
-
-        //10
         public UserServices(
             WebContext context,
             ILogger<UserServices> logger,
@@ -26,17 +19,13 @@ namespace WebApiProject.Services
             _logger = logger;
             _mapper = mapper;
         }
-
         /*_contextTodoDbContext: Veritabanıyla etkileşime geçmemizi sağlayan sınıfın bir örneği .
 _loggerILogger: Uygulamamız boyunca günlük kaydını kolaylaştıran sınıfın bir örneği .
 _mapperIMapper: AutoMapper kullanarak nesneden nesneye eşleme yapmamızı sağlayan sınıfın bir örneği .*/
         public async Task UserCreateTodoAsync(CreateUserRequest request)
-        {
-           
-            
+        {     
             try
-            {
-                
+            {    
                 var User = _mapper.Map<User>(request);
                 User.CreatedAt = DateTime.UtcNow;
                 _context.Add(User);
@@ -68,7 +57,7 @@ Veritabanına Ekleme : Varlığı bağlamımızdaki DbSet'e ekleriz ve değişik
 Hata Yönetimi : İşlem sırasında oluşabilecek herhangi bir istisnayı yakalıyoruz, hatayı kaydediyoruz ve açıklayıcı bir hata mesajıyla yeni bir istisna atıyoruz.
          */
         //kaldırma işlemi burda döner.
-        public async Task UserDeleteTodoAsync(Guid id)
+        public async Task UserDeleteTodoAsync(long id)
         {
             var User = await _context.Users.FindAsync(id);
             if (User != null)
