@@ -3,11 +3,13 @@ using WebApiProject.Interface;
 
 using WebApiProject.Contracts;
 using WebApiProject.Entities;
+using Microsoft.AspNetCore.Authorization;
 namespace WebApiProject.Controllers
  
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class AdressController : ControllerBase
     {
         private readonly IAdressServices _adressServices;

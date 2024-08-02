@@ -27,7 +27,6 @@ builder.Services.AddCors(options => options.AddPolicy("AllowAll", builder =>
 builder.Services.AddSwaggerGen(c =>
 
 {
-
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
@@ -107,7 +106,7 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
