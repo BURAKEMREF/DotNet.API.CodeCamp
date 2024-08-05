@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApiProject.Contracts;
 using WebApiProject.Entities;
 using WebApiProject.Interface;
 using WebApiProject.Models;
 using WebApiProject.Services;
+using WebApiProject.Context;
 
 
 namespace WebApiProject.Controllers;
@@ -16,6 +19,7 @@ namespace WebApiProject.Controllers;
 public class AuthController : ControllerBase
 {
     readonly IAuthService authService;
+    
 
     public AuthController(IAuthService authService)
     {
@@ -27,6 +31,9 @@ public class AuthController : ControllerBase
 
     {
         var result = await authService.RegisterUserAsync(request);
+        
+
+
         return result;
     }
 
