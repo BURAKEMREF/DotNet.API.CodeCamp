@@ -4,12 +4,12 @@ namespace WebApiProject.Entities
 {
     public class User
     {
-       // [Required] zorunlu kılnasını sağlar.
+        // [Required] zorunlu kılnasını sağlar.
         public long Id { get; set; }
         //[Required(ErrorMessage = "Name is required")]
         //[Display(Name = "Name")]
         public string? Name { get; set; }
-       // [EmailAddress]
+        // [EmailAddress]
         //[Required(ErrorMessage = "E-mail is required")]
         //[Display(Name = "Email")]
         public string? Email { get; set; }
@@ -22,11 +22,17 @@ namespace WebApiProject.Entities
         //[DataType(DataType.Password)]
         //[Display(Name = "Confirm password")]
         //[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-      //  public string ConfirmPassword { get; set; }
+        //  public string ConfirmPassword { get; set; }
         public string? UserName { get; set; }
         public string? Adresses { get; set; }
 
+        public int? UserType { get; set; }
+        public bool? IsActive { get; set; }
+
         //[DataType(DataType.Password)] bu anatosyon şifreyi giriş ekranında gizli olmasını sağlar.
         //[Display(Name = "Remember me?")] bu anastasyon giriş ekranında Remember me olarak gözükür kullancı isterse kendisini hatırlatır.
-    }   //public bool RememberMe { get; set; }
+
+
+    } //public bool RememberMe { get; set; }
+
 }

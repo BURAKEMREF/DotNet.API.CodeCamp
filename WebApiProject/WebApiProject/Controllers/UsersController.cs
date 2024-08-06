@@ -18,6 +18,7 @@ namespace WebApiProject.Controllers
 
         [HttpPost("CreateTodoAsync")]
         [Authorize(AuthenticationSchemes = "Bearer")]
+
         public async Task<IActionResult> CreateTodoAsync(CreateUserRequest request)
         {
             if (!ModelState.IsValid)
@@ -52,6 +53,7 @@ namespace WebApiProject.Controllers
 
         [HttpGet]
         [Authorize(AuthenticationSchemes = "Bearer")]
+       
         public async Task<IActionResult> UserGetAllAsync()
         {
             try

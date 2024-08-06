@@ -14,6 +14,9 @@ using NuGet.Common;
 using Newtonsoft.Json.Linq;
 using System.Net;
 using System;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using Microsoft.Extensions.Configuration;
 
 
 
@@ -26,11 +29,16 @@ namespace WebApiProject.Services
         private readonly WebContext _context;
         private readonly ILogger<AuthService> _logger;
         private readonly IMapper _mapper;
-
-        public AuthService(ITokenService tokenService, WebContext context)
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IConfiguration _configuration;    
+        public AuthService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, WebContext context, IConfiguration configuration, ITokenService tokenService)
         {
-            this._tokenService = tokenService;
-            this._context = context;    
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _context = context;
+            _configuration = configuration;
+            _tokenService = tokenService;
         }
 
         public async Task<UserRegisterResponse> RegisterUserAsync(UserRegisterRequest request)
@@ -70,7 +78,7 @@ namespace WebApiProject.Services
             if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
             {
                 response.StatusCode = (int)HttpStatusCode.BadRequest;
-                response.Message = "User is not found!";
+                response.Message = "Username or password is missing!";
 
                 return response;
             }
@@ -92,6 +100,27 @@ namespace WebApiProject.Services
 
                 return response;
             }
+            // Kullanıcının aktiflik durumu kontrolü
+            if ((bool)!user.IsActive)
+            {
+                response.StatusCode = (int)HttpStatusCode.Forbidden;
+                response.Message = "User is not active!";
+                return response;
+            }
+
+            // Kullanıcı rolünü al
+            var roles = await _userManager.GetRolesAsync(new IdentityUser());
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim("IsActive",(bool)user.IsActive ? "1" : "0")
+            };
+
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
 
             GenerateTokenRequest generateTokenRequest = new GenerateTokenRequest()
             {

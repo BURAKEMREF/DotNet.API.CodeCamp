@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Identity;
+using Autofac.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,6 +65,10 @@ builder.Services.AddDbContext<WebContext>(options =>
             );
     });
 });
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<WebContext>()
+                .AddDefaultTokenProviders()
+                .AddDefaultUI();
 builder.Services.AddScoped<IUserServices, UserServices>();
 builder.Services.AddScoped<IProductServices, ProductService>();
 builder.Services.AddScoped<IAdressServices, AdressService>();
@@ -86,14 +92,29 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true
     };
 });
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("Manager", policy => policy.RequireRole("Manager"));
+    options.AddPolicy("Member", policy => policy.RequireRole("Member"));
+    // Aktif kullanýcýlar için policy
+    options.AddPolicy("ActiveUserOnly", policy => policy.RequireAssertion(context =>
+        context.User.HasClaim(c => c.Type == "IsActive" && c.Value == "1")));
+});
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddAuthorization();
 
 
 // Add  This to in the Program.cs file
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());  // Add this line
 
+
+
 var app = builder.Build();
+
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
