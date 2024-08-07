@@ -5,7 +5,8 @@ using WebApiProject.Contracts;
 using WebApiProject.Entities;
 using WebApiProject.Interface;
 namespace WebApiProject.Services
-{    public class UserServices : IUserServices
+{
+    public class UserServices : IUserServices
     {
         private readonly WebContext _context;
         private readonly ILogger<UserServices> _logger;
@@ -23,9 +24,9 @@ namespace WebApiProject.Services
 _loggerILogger: Uygulamamız boyunca günlük kaydını kolaylaştıran sınıfın bir örneği .
 _mapperIMapper: AutoMapper kullanarak nesneden nesneye eşleme yapmamızı sağlayan sınıfın bir örneği .*/
         public async Task UserCreateTodoAsync(CreateUserRequest request)
-        {     
+        {
             try
-            {    
+            {
                 var User = _mapper.Map<User>(request);
                 User.CreatedAt = DateTime.UtcNow;
                 _context.Add(User);
@@ -85,8 +86,8 @@ Hata Yönetimi : İşlem sırasında oluşabilecek herhangi bir istisnayı yakal
 
         public async Task UserUpdateTodoAsync(long id, UpdateUserRequest request)
         {
-            
-            
+
+
             try
             {
                 var User = await _context.Users.FindAsync(id);
@@ -119,9 +120,17 @@ Hata Yönetimi : İşlem sırasında oluşabilecek herhangi bir istisnayı yakal
                 {
                     User.Adresses = request.Adresses;
                 }
+                if (request.UserType != null)
+                {
+                    User.UserType = request.UserType;
+                }
                 if (request.UserName != null)
                 {
                     User.UserName = request.UserName;
+                }
+                if (request.IsActive != null)
+                {
+                    User.IsActive = request.IsActive;
                 }
 
                 User.UpdatedAt = DateTime.Now;
@@ -133,7 +142,7 @@ Hata Yönetimi : İşlem sırasında oluşabilecek herhangi bir istisnayı yakal
                 _logger.LogError(ex, $"An error occurred while updating the todo item with id {id}.");
                 throw;
             }
-            
+
         }
     }
 }

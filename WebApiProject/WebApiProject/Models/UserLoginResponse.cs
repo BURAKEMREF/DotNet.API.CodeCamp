@@ -11,5 +11,7 @@
 
         public string? Password { get;  set; }
         public string? Email { get; set; }
+        public int? UserType { get; set; }
+        public bool? IsActive { get; set; }
     }
 }

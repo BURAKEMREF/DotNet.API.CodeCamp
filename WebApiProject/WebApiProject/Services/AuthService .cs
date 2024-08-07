@@ -31,7 +31,7 @@ namespace WebApiProject.Services
         private readonly IMapper _mapper;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly IConfiguration _configuration;    
+        private readonly IConfiguration _configuration;
         public AuthService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, WebContext context, IConfiguration configuration, ITokenService tokenService)
         {
             _userManager = userManager;
@@ -40,7 +40,6 @@ namespace WebApiProject.Services
             _configuration = configuration;
             _tokenService = tokenService;
         }
-
         public async Task<UserRegisterResponse> RegisterUserAsync(UserRegisterRequest request)
         {
             UserRegisterResponse response = new();
@@ -49,25 +48,48 @@ namespace WebApiProject.Services
             {
                 response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 response.Message = "Kullanıcı zaten kayıtlı!";
-
                 return response;
             }
-
-            var passwordHash = ComputeSha256Hash(request.Password);
+            var passwordHash = ComputeSha256Hash(request.Password);     
+            // Kullanıcı türüne göre belirli bir kod döndür
+            if (request.UserType == 2)
+            {
+                response.StatusCode = 2;
+                response.Message = "Kayıt başarılı: Customer";
+            }
+            else if (request.UserType == 3)
+            {
+                response.StatusCode = 3;
+                response.Message = "Kayıt başarılı: Vendor";
+            }
+            else if (request.UserType == 1)
+            {
+                response.StatusCode = 1;
+                response.Message = "Kayıt başarısız:Yönetici sadece Sultanı Bahtiyarı Emre cezeriye verebilir.";
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+            }
+            else
+            {
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Message = "Kayıt başarılı";
+            }
             var newUser = new User
             {
                 UserName = request.Username,
                 Password = passwordHash,
                 Email = request.Email,
                 CreatedAt = DateTime.UtcNow,
+                UserType = request.UserType,
+                IsActive = true,
             };
-
+            response.Username = request.Username;
+            response.Email = request.Email;
+            response.UserType = request.UserType;
+            response.Password = request.Password;
+            response.StatusCode = (int)HttpStatusCode.OK;
+            response.Message = "Kayıt başarlı";
             await _context.Users.AddAsync(newUser);
             await _context.SaveChangesAsync();
-
-            response.StatusCode =(int) HttpStatusCode.OK;
-            response.Message = "Kayıt başarlı";
-
             return response;
         }
 
@@ -79,16 +101,13 @@ namespace WebApiProject.Services
             {
                 response.StatusCode = (int)HttpStatusCode.BadRequest;
                 response.Message = "Username or password is missing!";
-
                 return response;
             }
-
             var user = await _context.Users.SingleOrDefaultAsync(u => u.UserName == request.Username);
             if (user == null)
             {
                 response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 response.Message = "User is not found!";
-
                 return response;
             }
 
@@ -97,7 +116,6 @@ namespace WebApiProject.Services
             {
                 response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 response.Message = "Password is invalid";
-
                 return response;
             }
             // Kullanıcının aktiflik durumu kontrolü
@@ -107,7 +125,6 @@ namespace WebApiProject.Services
                 response.Message = "User is not active!";
                 return response;
             }
-
             // Kullanıcı rolünü al
             var roles = await _userManager.GetRolesAsync(new IdentityUser());
             var claims = new List<Claim>
@@ -115,26 +132,21 @@ namespace WebApiProject.Services
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim("IsActive",(bool)user.IsActive ? "1" : "0")
             };
-
             foreach (var role in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
-
-
             GenerateTokenRequest generateTokenRequest = new GenerateTokenRequest()
             {
                 Username = request.Username
             };
             var token = _tokenService.GenerateToken(generateTokenRequest);
-
             response.StatusCode = (int)HttpStatusCode.OK;
             response.Message = "Login is successfull!";
             response.AuthToken = token.Result.Token;
-
             return response;
         }
-       public string ComputeSha256Hash(string rawData)
+        public string ComputeSha256Hash(string rawData)
         {
             using (var sha256Hash = SHA256.Create())
             {

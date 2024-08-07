@@ -20,5 +20,7 @@ namespace WebApiProject.Contracts
         public string UserName { get; set; }
 
         public string Adresses { get; set; }
+        public int? UserType { get; set; }
+        public bool? IsActive { get; set; }
     }
 }

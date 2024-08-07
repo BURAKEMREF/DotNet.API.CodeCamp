@@ -8,5 +8,7 @@
         public string? Email { get; set; }
         public int? StatusCode { get; set; }
         public string? Message { get; set; }
+        public int? UserType { get; set; }
+        public bool? IsActive { get; set; }
     }
 }

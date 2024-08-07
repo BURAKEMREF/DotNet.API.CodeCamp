@@ -21,7 +21,10 @@ namespace WebApiProject.MappingProfiles
                 .ForMember(dest => dest.Adresses, opt => opt.MapFrom(src => src.Adresses))
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName));
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.UserType, opt => opt.MapFrom(src => src.UserType))
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive));
+                
             CreateMap<UpdateUserRequest, User>()
                  .ForMember(dest => dest.Id, opt => opt.Ignore())
                  .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
@@ -29,7 +32,9 @@ namespace WebApiProject.MappingProfiles
                  .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                  .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                  .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
-                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName));
+                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
+                 .ForMember(dest => dest.UserType, opt => opt.MapFrom(src => src.UserType))
+                 .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive));
             CreateMap<CreateProductRequest, Product>()
                  .ForMember(dest => dest.ProductId, opt => opt.Ignore())
                  .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
