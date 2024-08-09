@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApiProject.Entities
 {
-    public class User
+    public class User 
     {
         // [Required] zorunlu kılnasını sağlar.
         public long Id { get; set; }

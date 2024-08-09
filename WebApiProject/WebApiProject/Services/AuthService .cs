@@ -17,6 +17,7 @@ using System;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.Extensions.Configuration;
+using WebApiProject.Constants;
 
 
 
@@ -50,7 +51,7 @@ namespace WebApiProject.Services
                 response.Message = "Kullanıcı zaten kayıtlı!";
                 return response;
             }
-            var passwordHash = ComputeSha256Hash(request.Password);     
+            var passwordHash = ComputeSha256Hash(request.Password);
             // Kullanıcı türüne göre belirli bir kod döndür
             if (request.UserType == 2)
             {
@@ -119,23 +120,38 @@ namespace WebApiProject.Services
                 return response;
             }
             // Kullanıcının aktiflik durumu kontrolü
+            // Kullanıcının UserType'ını kontrol et
+            if (user.UserType == 1)
+            {
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Message = "Login is successful for Admin!";
+            }
+            else if (user.UserType == 2)
+            {
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Message = "Login is successful for Customer!";
+            }
+            else if (user.UserType == 3)
+            {
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Message = "Login is successful for Vendor!";
+            }
+            else
+            {
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                response.Message = "Invalid UserType!";
+                return response;
+            }
             if ((bool)!user.IsActive)
             {
                 response.StatusCode = (int)HttpStatusCode.Forbidden;
                 response.Message = "User is not active!";
+                response.Message =""
                 return response;
             }
+
             // Kullanıcı rolünü al
-            var roles = await _userManager.GetRolesAsync(new IdentityUser());
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim("IsActive",(bool)user.IsActive ? "1" : "0")
-            };
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
+
             GenerateTokenRequest generateTokenRequest = new GenerateTokenRequest()
             {
                 Username = request.Username

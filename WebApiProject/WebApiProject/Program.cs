@@ -60,6 +60,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 builder.Services.AddDbContext<WebContext>(options =>
 {
+
     options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings").GetValue<string>("ContentCreatorConnection"), option =>
     {
         option.CommandTimeout(18000); //5 Saat Timeout
@@ -74,6 +75,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.Sign
                 .AddEntityFrameworkStores<WebContext>()
                 .AddDefaultTokenProviders()
                 .AddDefaultUI();
+
 builder.Services.AddScoped<IUserServices, UserServices>();
 builder.Services.AddScoped<IProductServices, ProductService>();
 builder.Services.AddScoped<IAdressServices, AdressService>();
