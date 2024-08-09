@@ -37,8 +37,6 @@ public class AuthController : ControllerBase
 
 
     [HttpPost("LoginUser")]
-    [Authorize(Policy = "Admin")]
-    [AllowAnonymous]
 
     public async Task<ActionResult<UserLoginResponse>> LoginUserAsync([FromBody] UserLoginRequest request)
     {

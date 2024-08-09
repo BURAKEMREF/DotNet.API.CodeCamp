@@ -11,12 +11,17 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Identity;
 using Autofac.Core;
+using Microsoft.Extensions.Configuration;
+using WebApiProject.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+var smtpSettings = builder.Configuration.GetSection("SmtpSettings").Get<SmtpSettings>();
+builder.Services.AddSingleton(smtpSettings);
+builder.Services.AddTransient<MailService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
@@ -74,6 +79,7 @@ builder.Services.AddScoped<IProductServices, ProductService>();
 builder.Services.AddScoped<IAdressServices, AdressService>();
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddTransient<IMailService, MailService>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
