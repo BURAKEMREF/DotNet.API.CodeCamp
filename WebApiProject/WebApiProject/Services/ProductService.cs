@@ -109,10 +109,7 @@ Hata İşleme : Belirtilen Todo öğesi bulunamazsa Id, açıklayıcı bir hata 
                     product.Price = request.Price;
                 }
 
-                if (request.CategoryId != null)
-                {
-                    product.CategoryId = request.CategoryId;
-                }
+             
 
             
 

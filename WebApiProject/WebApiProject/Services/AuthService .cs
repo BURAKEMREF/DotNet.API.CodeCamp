@@ -146,7 +146,6 @@ namespace WebApiProject.Services
             {
                 response.StatusCode = (int)HttpStatusCode.Forbidden;
                 response.Message = "User is not active!";
-                response.Message =""
                 return response;
             }
 

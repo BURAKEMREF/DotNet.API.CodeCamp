@@ -39,7 +39,7 @@ public class AuthController : ControllerBase
     [HttpPost("LoginUser")]
 
     public async Task<ActionResult<UserLoginResponse>> LoginUserAsync([FromBody] UserLoginRequest request)
-    {
+        {
         var result = await _authService.LoginUserAsync(request);
 
         return result;

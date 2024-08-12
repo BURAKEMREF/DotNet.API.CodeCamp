@@ -39,14 +39,18 @@ namespace WebApiProject.MappingProfiles
                  .ForMember(dest => dest.ProductId, opt => opt.Ignore())
                  .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                  .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
-                 .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.CategoryId));
+                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
             //.ForMember(dest => dest.Id, opt => opt.Ignore())
             //.ForMember(dest => dest.Name, opt => opt.Ignore())
             CreateMap<UpdateProductRequest, Product>()
                  .ForMember(dest => dest.ProductId, opt => opt.Ignore())
                  .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                  .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
-                 .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.CategoryId));
+                  
+                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
+
             CreateMap<CreateAdressRequest, Adress>()
                  .ForMember(dest => dest.Id, opt => opt.Ignore())
                  .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName))

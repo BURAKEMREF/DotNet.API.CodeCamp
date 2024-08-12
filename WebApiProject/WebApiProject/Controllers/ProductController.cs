@@ -17,7 +17,7 @@ namespace WebApiProject.Controllers
             _Productservices = ProductServices;
         }
         [HttpPost]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        //[Authorize(AuthenticationSchemes = "Bearer")]
 
         public async Task<IActionResult> CreateTodoAsync(CreateProductRequest request)
         {
@@ -70,7 +70,7 @@ namespace WebApiProject.Controllers
         public async Task<IActionResult> ProductGetByIdAsync(long id)
         {
             try
-            {
+           {
                 var product = await _Productservices.ProductGetByIdAsync(id);
                 if (product == null)
                 {
@@ -113,7 +113,7 @@ namespace WebApiProject.Controllers
                 return StatusCode(500, new { message = $"An error occurred while updating blog post with id {id}", error = ex.Message });
             }
         }
-        [HttpDelete("{id:guid}")]
+        [HttpDelete]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> ProductDeleteTodoAsync(long id)
         {
