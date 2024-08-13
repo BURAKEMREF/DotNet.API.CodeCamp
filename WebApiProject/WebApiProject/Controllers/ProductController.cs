@@ -16,7 +16,7 @@ namespace WebApiProject.Controllers
         {
             _Productservices = ProductServices;
         }
-        [HttpPost]
+        [HttpPost("CreateTodoAsync")]
         //[Authorize(AuthenticationSchemes = "Bearer")]
 
         public async Task<IActionResult> CreateTodoAsync(CreateProductRequest request)
@@ -39,8 +39,8 @@ namespace WebApiProject.Controllers
                 return StatusCode(500, new { message = "An error occurred while creating the  crating Todo Item", error = ex.Message });
             }
         }
-        [HttpGet]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpGet("ProductGetAllAsyn")]
+        //[Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> ProductGetAllAsync()
         {
             try
@@ -113,7 +113,7 @@ namespace WebApiProject.Controllers
                 return StatusCode(500, new { message = $"An error occurred while updating blog post with id {id}", error = ex.Message });
             }
         }
-        [HttpDelete]
+        [HttpDelete("ProductDeleteTodoAsync")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> ProductDeleteTodoAsync(long id)
         {
