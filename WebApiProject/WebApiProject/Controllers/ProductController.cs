@@ -115,8 +115,9 @@ namespace WebApiProject.Controllers
         }
         [HttpDelete("ProductDeleteTodoAsync")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> ProductDeleteTodoAsync(long id)
+        public async Task<IActionResult> ProductDeleteTodoAsync(int id)
         {
+
             try
             {
                 await _Productservices.ProductDeleteTodoAsync(id);

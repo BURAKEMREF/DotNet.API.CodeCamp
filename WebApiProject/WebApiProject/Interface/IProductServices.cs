@@ -11,7 +11,7 @@ namespace WebApiProject.Interface
             Task<Product> ProductGetByIdAsync(long id);
             Task ProductCreateTodoAsync(CreateProductRequest request);
             Task ProductUpdateTodoAsync(long id, UpdateProductRequest request);
-            Task ProductDeleteTodoAsync(long id);
+            Task ProductDeleteTodoAsync(int id);
         
     }
 }

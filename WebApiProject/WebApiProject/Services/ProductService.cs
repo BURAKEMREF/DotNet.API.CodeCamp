@@ -123,7 +123,7 @@ Hata İşleme : Belirtilen Todo öğesi bulunamazsa Id, açıklayıcı bir hata 
 
         }
 
-        public async Task ProductDeleteTodoAsync(long id)
+        public async Task ProductDeleteTodoAsync(int id)
         {
             var product = await _context.Products.FindAsync(id);
             if (product != null)
