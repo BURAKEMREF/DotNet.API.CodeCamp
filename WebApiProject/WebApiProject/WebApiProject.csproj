@@ -14,7 +14,6 @@
 		<PackageReference Include="AutoMapper" Version="13.0.1" />
 		<PackageReference Include="AutoMapper.Collection" Version="10.0.0" />
 		<PackageReference Include="LiteDB" Version="5.0.21" />
-		<PackageReference Include="MailKit" Version="4.6.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.32" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.32" />
@@ -48,6 +47,12 @@
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 		<PackageReference Include="System.Diagnostics.DiagnosticSource" Version="8.0.1" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.35.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Services\101IKProfileUpdateDemandMailTemplate.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 </Project>
