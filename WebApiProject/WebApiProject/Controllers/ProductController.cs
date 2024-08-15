@@ -67,7 +67,7 @@ namespace WebApiProject.Controllers
          * Alma işlemi sırasında bir hata oluşursa, bir hata mesajıyla Okbir yanıt döndürür .500 Internal Server Error*/
         [HttpGet("{id}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> ProductGetByIdAsync(long id)
+        public async Task<IActionResult> ProductGetByIdAsync(int id)
         {
             try
            {
@@ -89,9 +89,9 @@ namespace WebApiProject.Controllers
     Yapılacaklar Öğesini Güncelleme : Yapılacaklar öğesi bulunursa, UpdateTodoAsyncarayüzden ITodoServicesYapılacaklar öğesini güncellemek için metodu çağırırız.
     Başarılı Yanıt : Yapılacaklar öğesi başarıyla güncellenirse, Okbaşarı mesajını içeren bir yanıt döndürürüz.
     Hata İşleme500 Internal Server Error : Güncelleme işlemi sırasında bir hata oluşursa, hata mesajı içeren bir yanıt döndürüyoruz*/
-        [HttpPut("{id:guid}")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> UpdateTodoAsync(long id, UpdateProductRequest request)
+        [HttpPut("UpdateTodoAsync")]
+        //[Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> UpdateTodoAsync(UpdateProductRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -99,18 +99,18 @@ namespace WebApiProject.Controllers
             }
             try
             {
-                var product = await _Productservices.ProductGetByIdAsync(id);
+                var product = await _Productservices.ProductGetByIdAsync(request.ProductId);
                 if (product == null)
                 {
-                    return NotFound(new { message = $"Todo Item  with id {id} not found" });
+                    return NotFound(new { message = $"Todo Item  with id {request.ProductId} not found" });
                 }
 
-                await _Productservices.ProductUpdateTodoAsync(id, request);
-                return Ok(new { message = $" Todo Item  with id {id} successfully updated" });
+                await _Productservices.ProductUpdateTodoAsync(request.ProductId, request);
+                return Ok(new { message = $" Todo Item  with id {request.ProductId} successfully updated" });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = $"An error occurred while updating blog post with id {id}", error = ex.Message });
+                return StatusCode(500, new { message = $"An error occurred while updating blog post with id {request.ProductId}", error = ex.Message });
             }
         }
         [HttpDelete("ProductDeleteTodoAsync")]

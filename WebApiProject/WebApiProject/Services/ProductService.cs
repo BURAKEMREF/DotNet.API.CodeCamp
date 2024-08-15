@@ -51,7 +51,7 @@ _mapperIMapper: AutoMapper kullanarak nesneden nesneye eşleme yapmamızı sağl
         }
         */
    
-       public async  Task<Product> ProductGetByIdAsync(long id)
+       public async  Task<Product> ProductGetByIdAsync(int id)
         {
             var product = await _context.Products.FindAsync(id);
             if (product == null)
@@ -84,7 +84,7 @@ _mapperIMapper: AutoMapper kullanarak nesneden nesneye eşleme yapmamızı sağl
 Yapılacak Öğesini Güncelleme : Nesnede sağlanan değerlere göre Yapılacak öğesinin özelliklerini güncelliyoruz UpdateTodoRequest.
 
 Hata İşleme : Belirtilen Todo öğesi bulunamazsa Id, açıklayıcı bir hata mesajıyla bir istisna atarız.*/
-        public async Task ProductUpdateTodoAsync(long id, UpdateProductRequest request)
+        public async Task ProductUpdateTodoAsync(int id, UpdateProductRequest request)
         {
             try
             {
@@ -94,10 +94,10 @@ Hata İşleme : Belirtilen Todo öğesi bulunamazsa Id, açıklayıcı bir hata 
                     throw new Exception($"Todo item with id {id} not found.");
                 }
 
-                if (request.ProductId != null)
-                {
-                    product.ProductId = request.ProductId;
-                }
+                //if (request.ProductId != null)
+                //{
+                //    product.ProductId = request.ProductId;
+                //}
 
                 if (request.Name != null)
                 {
@@ -112,7 +112,7 @@ Hata İşleme : Belirtilen Todo öğesi bulunamazsa Id, açıklayıcı bir hata 
              
 
             
-
+                _context.Products.Update(product);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
