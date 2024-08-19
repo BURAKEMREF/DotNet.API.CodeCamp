@@ -25,14 +25,6 @@ namespace WebApiProject.Controllers
             {
                 return BadRequest(ModelState);
             }
-            /*Model Doğrulaması : İstek modelinin geçerli olup olmadığını kullanarak kontrol ederiz ModelState.IsValid. Model geçerli değilse, BadRequestmodel durum hatalarıyla bir yanıt döndürürüz.
-
-    Yapılacaklar Öğesi Oluşturma : Veritabanında yeni bir Yapılacaklar öğesi oluşturmak için arayüzden CreateTodoAsyncmetodu çağırıyoruz .ITodoServices
-
-    Başarı Yanıtı : Yapılacaklar öğesi başarıyla oluşturulursa, Okbaşarı mesajını içeren bir yanıt döndürürüz.
-
-    Hata İşleme500 Internal Server Error : Oluşturma işlemi sırasında bir hata oluşursa, hata mesajı içeren bir yanıt döndürüyoruz .*/
-
             try
             {
 
@@ -47,7 +39,13 @@ namespace WebApiProject.Controllers
                 return StatusCode(500, new { message = "An error occurred while creating the  crating Todo Item", error = ex.Message });
 
             }
+            /*Model Doğrulaması : İstek modelinin geçerli olup olmadığını kullanarak kontrol ederiz ModelState.IsValid. Model geçerli değilse, BadRequestmodel durum hatalarıyla bir yanıt döndürürüz.
 
+                Yapılacaklar Öğesi Oluşturma : Veritabanında yeni bir Yapılacaklar öğesi oluşturmak için arayüzden CreateTodoAsyncmetodu çağırıyoruz .ITodoServices
+
+                Başarı Yanıtı : Yapılacaklar öğesi başarıyla oluşturulursa, Okbaşarı mesajını içeren bir yanıt döndürürüz.
+
+                Hata İşleme500 Internal Server Error : Oluşturma işlemi sırasında bir hata oluşursa, hata mesajı içeren bir yanıt döndürüyoruz .*/
 
         }
 
@@ -66,16 +64,16 @@ namespace WebApiProject.Controllers
                 return Ok(new { message = "Successfully retrieved all blog posts", data = user });
 
             }
-            /*Yapılacaklar Öğelerini Getirme : Veritabanından tüm Yapılacaklar öğelerini getirmek için arayüzden GetAllAsyncmetodu çağırıyoruz .ITodoServices
-
-    Başarı Yanıtı : Yapılacaklar öğeleri başarıyla alınırsa, Okbir başarı mesajı ve Yapılacaklar öğelerinin listesiyle birlikte bir yanıt döndürürüz.
-
-    Hata İşleme500 Internal Server Error : Alma işlemi sırasında bir hata oluşursa, bir hata mesajı içeren bir yanıt döndürürüz .*/
+          
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = "An error occurred while retrieving all Tood it posts", error = ex.Message });
 
+                /*Yapılacaklar Öğelerini Getirme : Veritabanından tüm Yapılacaklar öğelerini getirmek için arayüzden GetAllAsyncmetodu çağırıyoruz .ITodoServices
 
+  Başarı Yanıtı : Yapılacaklar öğeleri başarıyla alınırsa, Okbir başarı mesajı ve Yapılacaklar öğelerinin listesiyle birlikte bir yanıt döndürürüz.
+
+  Hata İşleme500 Internal Server Error : Alma işlemi sırasında bir hata oluşursa, bir hata mesajı içeren bir yanıt döndürürüz .*/
             }
         }
 
@@ -97,8 +95,8 @@ namespace WebApiProject.Controllers
                 return StatusCode(500, new { message = $"An error occurred while retrieving the Todo item with Id {id}.", error = ex.Message });
             }
         }
-        [HttpPut("{id:guid}")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpPut("UserUpdateTodoAsync/{id}")]
+        //[Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UserUpdateTodoAsync(long id, UpdateUserRequest request)
         {
 
@@ -125,8 +123,8 @@ namespace WebApiProject.Controllers
                 return StatusCode(500, new { message = $"An error occurred while updating blog post with id {id}", error = ex.Message });
             }
         }
-        [HttpDelete("{id}")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpDelete("UserDeleteTodoAsync/{id}")]
+     //   [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UserDeleteTodoAsync(long id)
         {
             try

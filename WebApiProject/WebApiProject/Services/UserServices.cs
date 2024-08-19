@@ -21,8 +21,8 @@ namespace WebApiProject.Services
             _mapper = mapper;
         }
         /*_contextTodoDbContext: Veritabanıyla etkileşime geçmemizi sağlayan sınıfın bir örneği .
-_loggerILogger: Uygulamamız boyunca günlük kaydını kolaylaştıran sınıfın bir örneği .
-_mapperIMapper: AutoMapper kullanarak nesneden nesneye eşleme yapmamızı sağlayan sınıfın bir örneği .*/
+        _loggerILogger: Uygulamamız boyunca günlük kaydını kolaylaştıran sınıfın bir örneği .
+        _mapperIMapper: AutoMapper kullanarak nesneden nesneye eşleme yapmamızı sağlayan sınıfın bir örneği .*/
         public async Task UserCreateTodoAsync(CreateUserRequest request)
         {
             try

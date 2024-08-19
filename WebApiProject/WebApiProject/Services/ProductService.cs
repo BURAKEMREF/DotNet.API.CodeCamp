@@ -107,6 +107,18 @@ Hata İşleme : Belirtilen Todo öğesi bulunamazsa Id, açıklayıcı bir hata 
                 if (request.Price != null)
                 {
                     product.Price = request.Price;
+                }if (request.Name != null)
+                {
+                    product.Name = request.Name;
+                }if (request.Description != null)
+                {
+                    product.Description = request.Description;
+                }if (request.Status != null)
+                {
+                    product.Status = request.Status;
+                }if (request.Category != null)
+                {
+                    product.Category = request.Category;
                 }
 
              
