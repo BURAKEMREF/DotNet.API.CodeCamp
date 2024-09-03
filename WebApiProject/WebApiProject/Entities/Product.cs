@@ -16,6 +16,7 @@ namespace WebApiProject.Entities
         public string? Category { get; set; }
 
         public int? Price { get; set; }
+        
 
        // public int? CategoryId { get; set; }
     }
